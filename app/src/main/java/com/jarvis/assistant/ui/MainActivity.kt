@@ -11,6 +11,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.jarvis.assistant.databinding.ActivityMainBinding
 import com.jarvis.assistant.service.JarvisService
+import com.jarvis.assistant.R
 
 class MainActivity : AppCompatActivity() {
 
