@@ -1,0 +1,157 @@
+# JARVIS ASSISTANT — SETUP INSTRUCTIONS (v2 — No Picovoice needed)
+# Read top to bottom. Takes about 10 minutes.
+# ═══════════════════════════════════════════════════════
+
+
+## WHAT YOU WILL HAVE WHEN DONE
+- A real Android APK on your Nothing Phone 1
+- "Hey Jarvis" wake word — always listening in background
+- South African English accent recognition (en-ZA)
+- Full Claude AI intelligence for answers and conversation
+- Jarvis personality — dry wit, addresses you by name
+- Auto-starts when you reboot your phone
+- 100% free — no Picovoice, no third-party accounts except Claude
+
+
+## HOW THE WAKE WORD WORKS (no special engine needed)
+Jarvis uses Android's built-in speech recognition in a continuous loop.
+It listens quietly in the background, scans everything it hears for
+"Hey Jarvis", and only activates when it hears that phrase.
+Your phone vibrates briefly when it activates.
+
+
+## STEP 1 — GET YOUR CLAUDE API KEY (3 minutes)
+
+1. Go to: https://console.anthropic.com
+2. Sign up / log in
+3. Click "API Keys" in the left menu
+4. Click "Create Key" — copy the key (starts with sk-ant-)
+5. Keep it safe — you only see it once
+
+Cost: Less than R15/month at normal usage. Pay-as-you-go, no subscription.
+
+
+## STEP 2 — GITHUB ACCOUNT (skip if you have one)
+
+1. Go to: https://github.com
+2. Click "Sign up" — it's free
+
+
+## STEP 3 — UPDATE YOUR GITHUB REPO
+
+You already have a repo from before. You need to replace the files
+with this new version (which has no Picovoice code).
+
+Option A — Easiest:
+1. Delete your old repo (Settings → Danger Zone → Delete repository)
+2. Create a new one at https://github.com/new named: jarvis-assistant
+3. Upload the contents of this jarvis-android folder (not the folder itself)
+4. Commit changes
+
+Option B — Update in place:
+1. Open your existing repo
+2. Delete the old files one by one and upload the new ones
+(Option A is faster)
+
+
+## STEP 4 — ADD YOUR SECRET (1 minute)
+
+Only ONE secret needed this time (no Picovoice key required).
+
+1. In your GitHub repo → Settings → Secrets and variables → Actions
+2. Click "New repository secret"
+3. Name:  CLAUDE_API_KEY
+   Value: (paste your Claude key)
+4. Click "Add secret"
+
+
+## STEP 5 — BUILD THE APK
+
+1. Click the "Actions" tab in your repo
+2. Click "Build Jarvis APK"
+3. Click "Run workflow" → "Run workflow"
+4. Wait 3-5 minutes for the green tick
+5. Click the completed run → scroll to Artifacts
+6. Download "Jarvis-Assistant-APK" and unzip it
+
+
+## STEP 6 — INSTALL ON YOUR NOTHING PHONE 1
+
+Enable unknown sources:
+1. Settings → Apps → Special app access → Install unknown apps
+2. Find Chrome or Files → toggle ON "Allow from this source"
+
+Install:
+1. Transfer app-debug.apk to your phone (email, USB, or Google Drive)
+2. Open the file on your phone → tap Install
+3. Open "J.A.R.V.I.S" from your app drawer
+
+
+## STEP 7 — CONFIGURE JARVIS
+
+On first launch:
+1. Grant microphone permission when prompted
+2. Tap the settings gear (top right)
+3. Paste your Claude API key
+4. Enter your name (Jarvis will use this)
+5. Tap "Save Configuration"
+6. Tap the power button — Jarvis comes online
+
+
+## USING JARVIS
+
+Say "Hey Jarvis" — your phone vibrates to confirm it heard you.
+Then speak your command naturally.
+
+Examples:
+- "Hey Jarvis, what's the rand dollar exchange rate today?"
+- "Hey Jarvis, draft a professional email declining a meeting"
+- "Hey Jarvis, what's the weather in Johannesburg?"
+- "Hey Jarvis, explain what compound interest means"
+- "Hey Jarvis, tell me a joke"
+
+You can also speak the command in the same breath:
+- "Hey Jarvis what time is it in London?"
+
+
+## CRITICAL — BATTERY OPTIMISATION (Nothing Phone 1)
+
+Nothing OS aggressively kills background apps. This MUST be done
+or Jarvis will stop working after a few minutes in background.
+
+1. Settings → Battery → Background app management
+2. Find J.A.R.V.I.S
+3. Set to "No restrictions"
+
+This is the most important step for always-on behaviour.
+
+
+## TROUBLESHOOTING
+
+Problem: Jarvis doesn't respond to "Hey Jarvis"
+Fix: Make sure the app is powered ON (cyan ring).
+     Speak clearly. Try "Hey Jarvis" with a slight pause.
+     Check battery optimisation above.
+
+Problem: "No Claude API key configured"
+Fix: Settings gear → paste your key → Save
+
+Problem: Mishearing your SA accent
+Fix: "Optimise for SA English" must be ON in Settings.
+     Google's en-ZA speech model handles SA accents well.
+
+Problem: Build failed in GitHub Actions
+Fix: Secret name must be exactly: CLAUDE_API_KEY (no spaces, caps)
+
+Problem: App stops after screen off
+Fix: Battery optimisation — see above. Also:
+     Settings → Display → Always-on display (turn off to save battery)
+
+
+## INTERNET REQUIREMENT
+Wake word detection works offline (it's on-device).
+Claude responses require internet. Jarvis will tell you if it can't connect.
+
+
+═══════════════════════════════════════════════════════
+That's it. One API key. Ten minutes. Always-on Jarvis.

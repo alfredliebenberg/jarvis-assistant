@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/jarvis_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp">
+
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_back"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:tint="@color/jarvis_cyan"
+                android:contentDescription="Back"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SYSTEM CONFIG"
+                android:textColor="@color/jarvis_cyan"
+                android:textSize="18sp"
+                android:letterSpacing="0.2"
+                android:fontFamily="monospace"
+                android:layout_marginStart="12dp"/>
+        </LinearLayout>
+
+        <!-- Claude API Key -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CLAUDE API KEY"
+            android:textColor="@color/jarvis_dim"
+            android:textSize="11sp"
+            android:letterSpacing="0.2"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etClaudeKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="sk-ant-..."
+            android:inputType="textPassword"
+            android:textColor="@color/jarvis_text"
+            android:textColorHint="@color/jarvis_dim"
+            android:background="@drawable/input_bg"
+            android:padding="14dp"
+            android:fontFamily="monospace"
+            android:textSize="13sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Your Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="YOUR NAME (Jarvis will address you by this)"
+            android:textColor="@color/jarvis_dim"
+            android:textSize="11sp"
+            android:letterSpacing="0.1"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/etJarvisName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Alfred"
+            android:inputType="textPersonName|textCapWords"
+            android:textColor="@color/jarvis_text"
+            android:textColorHint="@color/jarvis_dim"
+            android:background="@drawable/input_bg"
+            android:padding="14dp"
+            android:fontFamily="monospace"
+            android:textSize="13sp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Toggles -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auto-start on boot"
+                android:textColor="@color/jarvis_text"
+                android:textSize="14sp"
+                android:fontFamily="monospace"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchAutoStart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Optimise for SA English accent"
+                android:textColor="@color/jarvis_text"
+                android:textSize="14sp"
+                android:fontFamily="monospace"/>
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchSaAccent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="SAVE CONFIGURATION"
+            android:textColor="@color/jarvis_bg"
+            android:backgroundTint="@color/jarvis_cyan"
+            android:letterSpacing="0.1"
+            android:fontFamily="monospace"/>
+
+    </LinearLayout>
+</ScrollView>
