@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/jarvis_bg">
 
-    <!-- Top header -->
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -28,13 +27,11 @@
         android:text="Just A Rather Very Intelligent System"
         android:textColor="@color/jarvis_dim"
         android:textSize="11sp"
-        android:letterSpacing="0.1"
         android:fontFamily="monospace"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Settings button top right -->
     <ImageButton
         android:id="@+id/btnSettings"
         android:layout_width="48dp"
@@ -49,7 +46,6 @@
         android:layout_marginTop="44dp"
         android:layout_marginEnd="16dp"/>
 
-    <!-- Central status ring -->
     <View
         android:id="@+id/statusRing"
         android:layout_width="240dp"
@@ -62,7 +58,6 @@
         android:layout_marginTop="48dp"
         android:layout_marginBottom="32dp"/>
 
-    <!-- Power button centered in ring -->
     <ImageButton
         android:id="@+id/btnPower"
         android:layout_width="80dp"
@@ -76,12 +71,11 @@
         app:layout_constraintStart_toStartOf="@id/statusRing"
         app:layout_constraintEnd_toEndOf="@id/statusRing"/>
 
-    <!-- Status text -->
     <TextView
         android:id="@+id/tvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OFFLINE"
+        android:text="OFFLINE - Tap to activate"
         android:textColor="@color/jarvis_dim"
         android:textSize="13sp"
         android:letterSpacing="0.2"
@@ -91,11 +85,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tvInstructions"/>
 
-    <!-- Instructions -->
     <TextView
         android:id="@+id/tvInstructions"
         android:layout_width="280dp"
-        android:text="Say Hey Jarvis at any time - even with screen off - to activate voice commands."
+        android:layout_height="wrap_content"
+        android:text="Say Hey Jarvis at any time to activate voice commands"
         android:textColor="@color/jarvis_dim"
         android:textSize="12sp"
         android:textAlignment="center"
