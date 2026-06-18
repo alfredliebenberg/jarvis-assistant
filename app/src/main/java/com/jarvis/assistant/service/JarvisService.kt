@@ -11,9 +11,12 @@ import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.jarvis.assistant.R
+import com.jarvis.assistant.actions.ActionExecutor
 import com.jarvis.assistant.api.ClaudeApi
+import com.jarvis.assistant.api.MorningBriefingService
 import kotlinx.coroutines.*
 import java.util.Locale
+import java.util.Calendar
 
 class JarvisService : Service(), TextToSpeech.OnInitListener {
 
@@ -24,6 +27,8 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
         private const val TAG = "JarvisService"
         private const val WAKE_PHRASE = "hey jarvis"
         private const val RESTART_DELAY = 500L
+        const val ACTION_MORNING_BRIEFING = "com.jarvis.assistant.MORNING_BRIEFING"
+        const val ALARM_REQUEST_CODE = 9001
     }
 
     private var tts: TextToSpeech? = null
@@ -50,6 +55,10 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        // Handle morning briefing alarm trigger
+        if (intent?.action == ACTION_MORNING_BRIEFING) {
+            triggerMorningBriefing()
+        }
         return START_STICKY
     }
 
@@ -76,17 +85,74 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
                         handler.postDelayed({ startListening() }, RESTART_DELAY)
                     }
                 })
-                updateNotification("Online - Say Hey Jarvis")
+                updateNotification("Online — Say Hey Jarvis")
+                scheduleMorningBriefingAlarm()
                 handler.postDelayed({ startListening() }, 1000L)
             } catch (e: Exception) {
                 Log.e(TAG, "TTS init failed: ${e.message}")
             }
         } else {
-            Log.e(TAG, "TTS failed with status: $status")
-            updateNotification("Online - TTS unavailable")
+            Log.e(TAG, "TTS failed: $status")
+            updateNotification("Online — TTS unavailable")
             handler.postDelayed({ startListening() }, 1000L)
         }
     }
+
+    // ─── Morning Briefing ───────────────────────────────────────────────────
+
+    private fun scheduleMorningBriefingAlarm() {
+        val prefs = getSharedPreferences("jarvis_prefs", Context.MODE_PRIVATE)
+        val enabled = prefs.getBoolean("morning_briefing_enabled", true)
+        val hour = prefs.getInt("morning_briefing_hour", 7)
+        val minute = prefs.getInt("morning_briefing_minute", 0)
+        if (!enabled) return
+
+        val cal = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+            if (before(Calendar.getInstance())) add(Calendar.DAY_OF_YEAR, 1)
+        }
+
+        val intent = Intent(this, JarvisService::class.java).apply {
+            action = ACTION_MORNING_BRIEFING
+        }
+        val pi = PendingIntent.getService(
+            this, ALARM_REQUEST_CODE, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+
+        val am = getSystemService(AlarmManager::class.java)
+        am.setRepeating(AlarmManager.RTC_WAKEUP, cal.timeInMillis, AlarmManager.INTERVAL_DAY, pi)
+        Log.d(TAG, "Morning briefing scheduled for ${hour}:${minute.toString().padStart(2, '0')}")
+    }
+
+    private fun triggerMorningBriefing() {
+        val prefs = getSharedPreferences("jarvis_prefs", Context.MODE_PRIVATE)
+        val owmKey = prefs.getString("owm_api_key", "") ?: ""
+        val msToken = prefs.getString("ms_graph_token", "") ?: ""
+        val city = prefs.getString("weather_city", "Johannesburg") ?: "Johannesburg"
+        val userName = prefs.getString("jarvis_name", "Alfred") ?: "Alfred"
+
+        if (owmKey.isEmpty()) {
+            speak("Good morning, $userName. I don't have a weather key configured, so I cannot give you a full briefing. Head to settings to add your OpenWeatherMap key.")
+            return
+        }
+
+        updateNotification("Preparing morning briefing...")
+        serviceScope.launch {
+            try {
+                val briefing = MorningBriefingService(this@JarvisService)
+                    .buildBriefing(owmKey, msToken, city, userName)
+                speak(briefing)
+            } catch (e: Exception) {
+                Log.e(TAG, "Morning briefing error: ${e.message}")
+                speak("Good morning, $userName. I encountered a problem preparing your briefing. Please check your network and API keys.")
+            }
+        }
+    }
+
+    // ─── Speech Recognition ─────────────────────────────────────────────────
 
     private fun startListening() {
         if (isSpeaking || isListenerActive) return
@@ -153,7 +219,7 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
                 putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "en-ZA")
                 putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 3)
                 putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true)
-                val silence = if (!isCommandMode) 4000L else 2000L
+                val silence = if (!isCommandMode) 4000L else 2500L
                 putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, silence)
                 putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, silence / 2)
             }
@@ -183,6 +249,8 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
         }
     }
 
+    // ─── Command Processing ─────────────────────────────────────────────────
+
     private fun processCommand(command: String) {
         updateNotification("Thinking...")
         val prefs = getSharedPreferences("jarvis_prefs", Context.MODE_PRIVATE)
@@ -206,16 +274,22 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
                     conversationHistory.removeAt(0)
                     conversationHistory.removeAt(0)
                 }
-                speak(response)
-                updateNotification("Online - Say Hey Jarvis")
+
+                // Execute action (opens apps, makes calls, etc.) and get spoken text
+                val result = ActionExecutor.execute(this@JarvisService, response)
+                speak(result.speech)
+                updateNotification("Online — Say Hey Jarvis")
+
             } catch (e: Exception) {
                 Log.e(TAG, "Claude error: ${e.message}")
                 speak("I could not reach my intelligence core. Please check your internet connection.")
-                updateNotification("Online - Say Hey Jarvis")
+                updateNotification("Online — Say Hey Jarvis")
                 handler.postDelayed({ startListening() }, 500L)
             }
         }
     }
+
+    // ─── TTS ────────────────────────────────────────────────────────────────
 
     private fun speak(text: String) {
         try {
@@ -228,6 +302,8 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
             handler.postDelayed({ startListening() }, RESTART_DELAY)
         }
     }
+
+    // ─── Notifications ──────────────────────────────────────────────────────
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -264,6 +340,8 @@ class JarvisService : Service(), TextToSpeech.OnInitListener {
             Log.e(TAG, "notification error: ${e.message}")
         }
     }
+
+    // ─── Utility ─────────────────────────────────────────────────────────────
 
     private fun vibratePhone() {
         try {

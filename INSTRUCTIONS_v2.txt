@@ -1,0 +1,201 @@
+═══════════════════════════════════════════════════════════════════
+JARVIS v2 — FULL PERSONAL ASSISTANT UPGRADE
+═══════════════════════════════════════════════════════════════════
+
+WHAT'S NEW IN v2
+────────────────
+✓ Open apps by voice:  "Hey Jarvis, open WhatsApp"
+✓ Make calls:          "Hey Jarvis, call 082 123 4567"
+✓ WhatsApp messages:   "Hey Jarvis, WhatsApp 082 123 4567 tell them I'm on my way"
+✓ SMS:                 "Hey Jarvis, SMS 082 123 4567 running late"
+✓ Navigate:            "Hey Jarvis, navigate to Sandton City"
+✓ Google search:       "Hey Jarvis, Google rand dollar exchange rate"
+✓ Draft emails:        "Hey Jarvis, email john@company.com subject Meeting body Hi John..."
+✓ Morning briefing:    Weather + Outlook calendar spoken at your chosen wake-up time
+✓ All previous features retained (conversation, questions, advice)
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 1 — REPLACE THE FILES IN YOUR GITHUB REPO
+═══════════════════════════════════════════════════════════════════
+
+From this zip, copy these files into your jarvis-assistant GitHub repo,
+replacing the old versions:
+
+  app/src/main/AndroidManifest.xml
+  app/src/main/java/com/jarvis/assistant/api/ClaudeApi.kt
+  app/src/main/java/com/jarvis/assistant/api/MorningBriefingService.kt   ← NEW
+  app/src/main/java/com/jarvis/assistant/actions/ActionExecutor.kt        ← NEW
+  app/src/main/java/com/jarvis/assistant/service/JarvisService.kt
+  app/src/main/java/com/jarvis/assistant/ui/SettingsActivity.kt
+  app/src/main/res/layout/activity_settings.xml
+
+Easiest way:
+1. Open your GitHub repo in your browser
+2. Click each file → click the pencil (edit) icon → paste the new content → commit
+   OR drag-and-drop upload all files via GitHub's upload interface
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 2 — BUILD & INSTALL (same as before)
+═══════════════════════════════════════════════════════════════════
+
+1. GitHub → Actions tab → "Build Jarvis APK" → Run workflow
+2. Wait 3-5 minutes → download the artifact → install the APK
+3. When prompted for permissions, grant ALL of them:
+   - Microphone (required)
+   - Phone / Make calls (required for calls)
+   - Contacts (for contact lookup)
+   - SMS (for text messages)
+   - Calendar (for morning briefing)
+   - Notifications (for always-on notification)
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 3 — GET YOUR FREE WEATHER API KEY (2 minutes)
+═══════════════════════════════════════════════════════════════════
+
+1. Go to:  https://openweathermap.org/api
+2. Click "Sign Up" (free)
+3. Go to: https://home.openweathermap.org/api_keys
+4. Copy your API key
+5. Paste it into Jarvis Settings → Weather API Key field
+6. Set your city (e.g. Johannesburg)
+
+Free tier: 60 calls/minute, more than enough for daily use.
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 4 — CONNECT OUTLOOK CALENDAR (optional but recommended)
+═══════════════════════════════════════════════════════════════════
+
+Jarvis uses Microsoft Graph API to read your Outlook calendar.
+You need to give it a temporary access token.
+
+EASY METHOD (no coding, works for personal testing):
+
+1. Go to: https://developer.microsoft.com/en-us/graph/graph-explorer
+2. Click "Sign in" (top right) — log in with your Microsoft/Outlook account
+3. You'll see a green "Signed in as..." banner
+4. In the left panel, click "Access token" tab
+5. Copy the entire token (it's a long string starting with "eyJ...")
+6. Paste it into Jarvis Settings → Microsoft Graph Bearer Token
+
+NOTE: These tokens expire after 60-90 minutes.
+For a permanent solution, contact Alfred to set up an Azure app registration
+(this requires some IT setup but gives a permanent token via OAuth).
+
+
+═══════════════════════════════════════════════════════════════════
+STEP 5 — CONFIGURE MORNING BRIEFING
+═══════════════════════════════════════════════════════════════════
+
+In Jarvis Settings:
+1. Toggle "Enable morning briefing" ON
+2. Set your wake-up time using the hour/minute pickers
+3. Tap Save Configuration
+4. Close the app and reopen it (so the alarm registers)
+
+At your set time each morning, Jarvis will automatically speak:
+  "Good morning, Alfred. In Johannesburg right now, it is 14 degrees..."
+  followed by your full calendar for the day.
+
+Your phone does NOT need to be unlocked — it works from the lock screen.
+
+
+═══════════════════════════════════════════════════════════════════
+VOICE COMMAND EXAMPLES (v2)
+═══════════════════════════════════════════════════════════════════
+
+OPEN APPS:
+  "Hey Jarvis, open WhatsApp"
+  "Hey Jarvis, open Gmail"
+  "Hey Jarvis, open Outlook"
+  "Hey Jarvis, open YouTube"
+  "Hey Jarvis, open my banking app"   → will ask which one if unsure
+  "Hey Jarvis, open Settings"
+  "Hey Jarvis, open Maps"
+
+CALLS:
+  "Hey Jarvis, call 082 123 4567"
+  "Hey Jarvis, call Samantha"         → asks for number if not stored
+  Note: On Nothing Phone 1, grant CALL_PHONE permission for instant dialling.
+        Without it, Jarvis opens the dialler with the number pre-filled.
+
+WHATSAPP:
+  "Hey Jarvis, WhatsApp 082 123 4567 let them know I'm running late"
+  "Hey Jarvis, send WhatsApp to 082 123 4567 say on my way"
+  → Opens WhatsApp with the chat and message pre-typed. You tap Send.
+
+SMS:
+  "Hey Jarvis, SMS 082 123 4567 I'll be there in 10 minutes"
+  → Opens your SMS app with number and message pre-filled.
+
+NAVIGATION:
+  "Hey Jarvis, navigate to Sandton City"
+  "Hey Jarvis, navigate to OR Tambo International Airport"
+  "Hey Jarvis, get me directions to 15 Alice Lane, Sandton"
+  → Opens Google Maps in navigation mode.
+
+GOOGLE:
+  "Hey Jarvis, Google rand dollar exchange rate"
+  "Hey Jarvis, search for Quantum Loans reviews"
+  "Hey Jarvis, Google the weather in Cape Town this weekend"
+
+EMAIL:
+  "Hey Jarvis, email samantha@acquifin.co.za subject Status update body Hi Sam please send me the report"
+  → Opens your default email app with everything pre-filled.
+
+WEATHER / QUESTIONS:
+  "Hey Jarvis, what's the weather like in Johannesburg?"
+  "Hey Jarvis, what time is it in London?"
+  "Hey Jarvis, translate 'good morning' to Zulu"
+  "Hey Jarvis, remind me about our project deadlines"
+
+
+═══════════════════════════════════════════════════════════════════
+PERMISSIONS YOU MUST GRANT ON FIRST RUN
+═══════════════════════════════════════════════════════════════════
+
+When you first install and launch the app, you'll be prompted for:
+
+1. Microphone — REQUIRED. Jarvis cannot hear you without this.
+2. Phone — for direct calling (without this, it opens the dialler instead).
+3. Contacts — optional but lets Jarvis resolve names to numbers.
+4. Send SMS — for SMS actions.
+5. Calendar — for the morning briefing (reads your device calendar as backup).
+6. Notifications — for the persistent status notification.
+
+If you accidentally denied any permission:
+  Settings → Apps → J.A.R.V.I.S → Permissions → enable each one
+
+
+═══════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════
+
+Problem: "I couldn't find that app on your phone"
+Fix: The app may not be installed, or Jarvis doesn't know its package name yet.
+     Say the exact app name. If it still fails, Claude.ai can add the package
+     name to the APP_PACKAGES map in ActionExecutor.kt.
+
+Problem: Morning briefing doesn't fire
+Fix: 1. Check battery optimisation is set to "No restrictions" for Jarvis.
+     2. Toggle the morning briefing OFF and ON in settings, then restart Jarvis.
+     3. Nothing OS sometimes kills alarms — "No restrictions" is critical.
+
+Problem: Outlook calendar shows "could not access"
+Fix: Your Microsoft Graph token has expired (they last 60-90 minutes).
+     Go to graph-explorer, sign in again, copy a fresh token, paste in settings.
+
+Problem: Call just opens the dialler
+Fix: Settings → Apps → J.A.R.V.I.S → Permissions → Phone → Allow
+
+Problem: WhatsApp message opens but the contact is wrong
+Fix: Make sure you say the number in SA format: "zero eight two one two three..."
+     Jarvis automatically converts 0xx to +27xx for WhatsApp.
+
+
+═══════════════════════════════════════════════════════════════════
+THAT'S IT. Your personal Iron Man assistant is now operational.
+═══════════════════════════════════════════════════════════════════
