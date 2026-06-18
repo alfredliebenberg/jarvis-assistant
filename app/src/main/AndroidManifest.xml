@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permissions -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -21,7 +20,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jarvis">
 
-        <!-- Main Activity -->
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -33,13 +31,17 @@
             </intent-filter>
         </activity>
 
-        <!-- Always-On Wake Word Service -->
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
         <service
             android:name=".service.JarvisService"
             android:exported="false"
             android:foregroundServiceType="microphone" />
 
-        <!-- Auto-start on boot -->
         <receiver
             android:name=".service.BootReceiver"
             android:exported="true">
