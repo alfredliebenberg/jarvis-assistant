@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Header -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -20,7 +19,7 @@
             android:letterSpacing="0.15"
             android:layout_marginBottom="24dp" />
 
-        <!-- ── INTELLIGENCE ── -->
+        <!-- INTELLIGENCE CORE -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="INTELLIGENCE CORE"
             android:textColor="#607D8B" android:textSize="11sp"
@@ -30,7 +29,7 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Claude API Key (sk-ant-...)"
             android:inputType="textPassword"
-            android:textColor="#FFFFFF" android:hintTextColor="#555" android:textColorHint="#555"
+            android:textColor="#FFFFFF" android:textColorHint="#555555"
             android:background="@drawable/input_bg" android:padding="12dp"
             android:layout_marginBottom="16dp"/>
 
@@ -38,26 +37,26 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Your name (Jarvis will use this)"
             android:inputType="textPersonName"
-            android:textColor="#FFFFFF" android:hintTextColor="#555"
+            android:textColor="#FFFFFF" android:textColorHint="#555555"
             android:background="@drawable/input_bg" android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- ── WEATHER ── -->
+        <!-- WEATHER -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="WEATHER (OpenWeatherMap)"
             android:textColor="#607D8B" android:textSize="11sp"
             android:letterSpacing="0.2" android:layout_marginBottom="4dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Free key at openweathermap.org → API keys"
-            android:textColor="#40607D8B" android:textSize="11sp"
+            android:text="Free key at openweathermap.org"
+            android:textColor="#607D8B" android:textSize="11sp"
             android:layout_marginBottom="8dp"/>
 
         <EditText android:id="@+id/etOwmKey"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="OpenWeatherMap API Key"
             android:inputType="textPassword"
-            android:textColor="#FFFFFF" android:hintTextColor="#555"
+            android:textColor="#FFFFFF" android:textColorHint="#555555"
             android:background="@drawable/input_bg" android:padding="12dp"
             android:layout_marginBottom="12dp"/>
 
@@ -65,11 +64,11 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Your city (e.g. Johannesburg)"
             android:inputType="textCapWords"
-            android:textColor="#FFFFFF" android:hintTextColor="#555"
+            android:textColor="#FFFFFF" android:textColorHint="#555555"
             android:background="@drawable/input_bg" android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- ── MORNING BRIEFING ── -->
+        <!-- MORNING BRIEFING -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="MORNING BRIEFING"
             android:textColor="#607D8B" android:textSize="11sp"
@@ -101,27 +100,27 @@
                 android:layout_width="wrap_content" android:layout_height="wrap_content"/>
         </LinearLayout>
 
-        <!-- ── OUTLOOK / MICROSOFT ── -->
+        <!-- OUTLOOK CALENDAR -->
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:text="OUTLOOK CALENDAR"
             android:textColor="#607D8B" android:textSize="11sp"
             android:letterSpacing="0.2" android:layout_marginBottom="4dp"/>
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:text="Paste your Microsoft Graph access token below.\nGet it via: portal.azure.com → Graph Explorer → copy Bearer token"
-            android:textColor="#40607D8B" android:textSize="11sp"
+            android:text="Paste Microsoft Graph token. Get from: developer.microsoft.com/graph/graph-explorer"
+            android:textColor="#607D8B" android:textSize="11sp"
             android:layout_marginBottom="8dp"/>
 
         <EditText android:id="@+id/etMsToken"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:hint="Microsoft Graph Bearer Token (optional)"
-            android:inputType="textMultiLine|textPassword"
+            android:inputType="textMultiLine"
             android:minLines="3"
-            android:textColor="#FFFFFF" android:hintTextColor="#555"
+            android:textColor="#FFFFFF" android:textColorHint="#555555"
             android:background="@drawable/input_bg" android:padding="12dp"
             android:layout_marginBottom="24dp"/>
 
-        <!-- ── SAVE ── -->
+        <!-- SAVE -->
         <Button android:id="@+id/btnSave"
             android:layout_width="match_parent" android:layout_height="48dp"
             android:text="SAVE CONFIGURATION"
